@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Softly - Digital Wellness</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Reenie+Beanie&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'soft-bg': '#FDFCF8',
+                        'soft-sage': '#E8EFE8',
+                        'soft-lavender': '#EFEDF4',
+                        'soft-coral': '#FFB7B2',
+                        'soft-dark': '#292524',
+                        'soft-muted': '#78716C',
+                    },
+                    fontFamily: {
+                        'sans': ['Outfit', 'sans-serif'],
+                        'cursive': ['Reenie Beanie', 'cursive'],
+                    },
+                    boxShadow: {
+                        'soft': '0 4px 20px -2px rgba(0,0,0,0.05)',
+                        'soft-lg': '0 10px 40px -10px rgba(0,0,0,0.08)',
+                    },
+                    animation: {
+                        'float': 'float 6s ease-in-out infinite',
+                        'float-delayed': 'float 6s ease-in-out 3s infinite',
+                        'pulse-slow': 'pulse-custom 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-15px)' },
+                        },
+                        'pulse-custom': {
+                            '0%, 100%': { transform: 'scale(1)', opacity: '1' },
+                            '50%': { transform: 'scale(1.05)', opacity: '0.8' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Custom scrollbar for horizontal sections */
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        /* Reveal Animation Base Classes */
+        .reveal-element {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s cubic-bezier(0.33, 1, 0.68, 1), transform 0.8s cubic-bezier(0.33, 1, 0.68, 1);
+        }
+        .reveal-element.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* FAQ Accordion Transition */
+        .faq-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease-in-out, padding 0.5s ease-in-out;
+        }
+        .faq-content.open {
+            max-height: 200px; /* Arbitrary large enough height */
+        }
+        
+        /* Smooth base text rendering */
+        body {
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+    </style>
+</head>
+<body class="bg-soft-bg text-soft-dark font-sans relative overflow-x-hidden selection:bg-soft-coral selection:text-white">
+
+    <!-- Global Grain Overlay -->
+    <div class="fixed inset-0 z-50 pointer-events-none opacity-[0.35] mix-blend-overlay w-full h-full">
+        <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" class="w-full h-full object-cover">
+            <filter id="noiseFilter">
+                <feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch"/>
+            </filter>
+            <rect width="100%" height="100%" filter="url(#noiseFilter)"/>
+        </svg>
+    </div>
+
+    <!-- Floating Navigation -->
+    <nav class="fixed top-4 left-0 w-full z-40 flex justify-center px-4">
+        <div class="w-[calc(100%-32px)] max-w-3xl bg-white/70 backdrop-blur-[20px] rounded-full px-4 py-3 flex items-center justify-between shadow-soft border border-white/50">
+            <!-- Logo -->
+            <a href="#" class="flex items-center gap-2 group">
+                <div class="w-8 h-8 rounded-full bg-soft-coral flex items-center justify-center transition-transform group-hover:scale-105">
+                    <div class="w-2 h-2 rounded-full bg-white"></div>
+                </div>
+                <span class="font-medium tracking-tight text-lg">softly</span>
+            </a>
+
+            <!-- Desktop Links -->
+            <div class="hidden md:flex items-center gap-8 text-[14px] font-medium text-soft-muted">
+                <a href="#features" class="hover:text-soft-dark transition-colors">Philosophy</a>
+                <a href="#experience" class="hover:text-soft-dark transition-colors">Experience</a>
+                <a href="#testimonials" class="hover:text-soft-dark transition-colors">Stories</a>
+            </div>
+
+            <!-- CTA -->
+            <a href="#waitlist" class="bg-soft-dark text-white px-5 py-2.5 rounded-full text-[14px] font-medium hover:bg-stone-800 transition-colors">
+                Get Early Access
+            </a>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="relative min-h-[90vh] flex items-center justify-center pt-24 pb-16 px-4 overflow-hidden">
+        <!-- Background Blobs -->
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-4xl h-full flex justify-center gap-10 -z-10 opacity-60">
+            <div class="w-72 h-72 md:w-96 md:h-96 bg-[#FFE4E1] rounded-full blur-[80px] md:blur-[120px] animate-float mix-blend-multiply"></div>
+            <div class="w-72 h-72 md:w-96 md:h-96 bg-[#E6E6FA] rounded-full blur-[80px] md:blur-[120px] animate-float-delayed mix-blend-multiply absolute right-10 top-20"></div>
+        </div>
+
+        <div class="text-center max-w-4xl mx-auto z-10 reveal-element">
+            <h1 class="text-5xl md:text-7xl lg:text-[96px] font-medium tracking-[-0.025em] leading-[1.1] mb-6 text-soft-dark">
+                Reclaim your time,<br>
+                live <span class="font-cursive text-soft-coral font-normal text-6xl md:text-8xl lg:text-[110px] lowercase relative top-2">intentionally</span>.
+            </h1>
+            <p class="text-lg md:text-xl text-soft-muted max-w-[500px] mx-auto mb-10 leading-relaxed">
+                EVOKE 2026
+            </p>
+            <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+                <a href="#waitlist" class="w-full sm:w-auto bg-soft-coral text-white px-8 py-4 rounded-full font-medium text-lg shadow-soft hover:shadow-soft-lg hover:-translate-y-0.5 transition-all duration-300">
+                    Start your journey
+                </a>
+                <a href="#experience" class="w-full sm:w-auto bg-white border border-stone-200 text-soft-dark px-8 py-4 rounded-full font-medium text-lg hover:bg-stone-50 transition-all duration-300">
+                    Take a tour
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Horizontal Scenario Scroll -->
+    <section id="features" class="py-20 md:py-32 reveal-element">
+        <div class="pl-4 md:pl-8 lg:pl-12 mb-12 max-w-7xl mx-auto">
+            <h2 class="text-3xl md:text-4xl font-medium tracking-tight mb-4">Moments of calm.</h2>
+            <p class="text-soft-muted">Swipe through your daily rituals.</p>
+        </div>
+
+        <div class="flex overflow-x-auto snap-x snap-mandatory gap-4 px-4 md:px-8 lg:px-12 pb-12 hide-scrollbar max-w-[100vw]">
+            <!-- Card 1 -->
+            <div class="shrink-0 w-[288px] h-[160px] bg-white rounded-[24px] p-6 flex flex-col justify-between snap-center shadow-soft group transition-transform hover:-translate-y-1 cursor-pointer">
+                <span class="text-[14px] text-stone-400 font-medium">07:30 AM</span>
+                <p class="text-[20px] text-stone-800 font-medium leading-tight group-hover:text-soft-coral transition-colors duration-300">Morning breathing exercise to start the day right.</p>
+            </div>
+            <!-- Card 2 -->
+            <div class="shrink-0 w-[288px] h-[160px] bg-white rounded-[24px] p-6 flex flex-col justify-between snap-center shadow-soft group transition-transform hover:-translate-y-1 cursor-pointer">
+                <span class="text-[14px] text-stone-400 font-medium">12:15 PM</span>
+                <p class="text-[20px] text-stone-800 font-medium leading-tight group-hover:text-[#9FB4A1] transition-colors duration-300">A quick digital detox walk during lunch break.</p>
+            </div>
+            <!-- Card 3 -->
+            <div class="shrink-0 w-[288px] h-[160px] bg-white rounded-[24px] p-6 flex flex-col justify-between snap-center shadow-soft group transition-transform hover:-translate-y-1 cursor-pointer">
+                <span class="text-[14px] text-stone-400 font-medium">04:00 PM</span>
+                <p class="text-[20px] text-stone-800 font-medium leading-tight group-hover:text-[#A7A2B8] transition-colors duration-300">Focus mode activated. Blocking distracting notifications.</p>
+            </div>
+            <!-- Card 4 -->
+            <div class="shrink-0 w-[288px] h-[160px] bg-white rounded-[24px] p-6 flex flex-col justify-between snap-center shadow-soft group transition-transform hover:-translate-y-1 cursor-pointer">
+                <span class="text-[14px] text-stone-400 font-medium">09:00 PM</span>
+                <p class="text-[20px] text-stone-800 font-medium leading-tight group-hover:text-soft-coral transition-colors duration-300">Evening reflection and gratitude journal entry.</p>
+            </div>
+            <!-- Spacer to allow last card to scroll to middle on mobile -->
+            <div class="shrink-0 w-[10px] md:hidden"></div>
+        </div>
+    </section>
+
+    <!-- App Experience Preview -->
+    <section id="experience" class="py-20 md:py-32 overflow-hidden reveal-element">
+        <div class="text-center mb-16 px-4">
+            <h2 class="text-4xl md:text-5xl font-medium tracking-tight mb-4">Feel the interface.</h2>
+            <p class="text-soft-muted text-lg max-w-md mx-auto">Tactile, rounded, and softly colored to reduce cognitive load.</p>
+        </div>
+
+        <div class="relative w-full max-w-5xl mx-auto h-[650px] flex justify-center items-start pt-10">
+            <!-- Left Phone -->
+            <div class="hidden md:block absolute left-[5%] lg:left-[15%] top-12 z-10 w-[280px] h-[580px] bg-soft-sage rounded-[40px] shadow-soft-lg border-8 border-white opacity-80 transform translate-y-[48px] overflow-hidden">
+                <div class="p-6 h-full flex flex-col">
+                    <div class="w-1/2 h-4 bg-white/50 rounded-full mb-8"></div>
+                    <div class="flex-1 space-y-4">
+                        <div class="w-full h-24 bg-white/40 rounded-2xl"></div>
+                        <div class="w-full h-24 bg-white/40 rounded-2xl"></div>
+                        <div class="w-full h-24 bg-white/40 rounded-2xl"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Phone -->
+            <div class="hidden md:block absolute right-[5%] lg:right-[15%] top-12 z-10 w-[280px] h-[580px] bg-soft-lavender rounded-[40px] shadow-soft-lg border-8 border-white opacity-80 transform translate-y-[96px] overflow-hidden">
+                <div class="p-6 h-full flex flex-col justify-end pb-12">
+                     <div class="w-full h-48 bg-white/40 rounded-[2rem] mb-4"></div>
+                     <div class="w-3/4 h-8 bg-white/50 rounded-full"></div>
+                </div>
+            </div>
+
+            <!-- Center Phone -->
+            <div class="relative z-20 w-[300px] h-[620px] bg-white rounded-[44px] shadow-[0_20px_50px_-12px_rgba(0,0,0,0.15)] border-8 border-stone-50 flex flex-col items-center justify-center p-8 overflow-hidden">
+                <!-- Phone Top Notch Mock -->
+                <div class="absolute top-0 w-1/3 h-6 bg-stone-50 rounded-b-xl"></div>
+                
+                <div class="text-center mb-12">
+                    <p class="text-stone-400 font-medium text-sm mb-2">Current Status</p>
+                    <h3 class="text-2xl font-medium text-stone-800">Unwinding</h3>
+                </div>
+
+                <!-- Pulsing Breathe Button -->
+                <button class="w-32 h-32 rounded-full bg-soft-coral text-white font-medium text-lg shadow-soft animate-pulse-slow flex items-center justify-center hover:scale-105 transition-transform duration-300">
+                    Breathe
+                </button>
+                
+                <div class="absolute bottom-10 w-full px-8 flex justify-between gap-2">
+                    <div class="h-14 flex-1 bg-stone-100 rounded-2xl"></div>
+                    <div class="h-14 flex-1 bg-stone-100 rounded-2xl"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Diary Entry Testimonials -->
+    <section id="testimonials" class="py-24 md:py-32 bg-stone-50/50 reveal-element">
+        <div class="max-w-4xl mx-auto px-4 md:px-8">
+            <h2 class="text-3xl md:text-4xl font-medium tracking-tight mb-16 text-center">Notes from our community.</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
+                <!-- Card 1 -->
+                <div class="bg-white p-8 md:p-10 rounded-[2rem] shadow-soft transform rotate-1 hover:rotate-0 transition-transform duration-500">
+                    <p class="text-lg md:text-xl text-stone-700 leading-relaxed mb-8">
+                        "It finally feels like an app is respecting my attention rather than fighting for it. The soft colors and gentle reminders make my evenings so much calmer."
+                    </p>
+                    <div class="flex items-center gap-4">
+                        <div class="w-8 h-[1px] bg-stone-300"></div>
+                        <span class="font-cursive text-[28px] text-stone-500">Sarah M.</span>
+                    </div>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="bg-white p-8 md:p-10 rounded-[2rem] shadow-soft transform -rotate-1 hover:rotate-0 transition-transform duration-500 mt-0 md:mt-12">
+                    <p class="text-lg md:text-xl text-stone-700 leading-relaxed mb-8">
+                        "The horizontal scroll feels like flipping through a physical journal. It’s a tiny detail, but it entirely changes how I interact with my phone."
+                    </p>
+                    <div class="flex items-center gap-4">
+                        <div class="w-8 h-[1px] bg-stone-300"></div>
+                        <span class="font-cursive text-[28px] text-stone-500">David K.</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="py-24 md:py-32 max-w-3xl mx-auto px-4 md:px-8 reveal-element">
+        <h2 class="text-3xl md:text-4xl font-medium tracking-tight mb-12 text-center">Common thoughts.</h2>
+        
+        <div class="space-y-4">
+            <!-- FAQ Item 1 -->
+            <div class="faq-container bg-white rounded-2xl border border-stone-100 shadow-sm overflow-hidden">
+                <button class="faq-btn w-full px-6 py-6 flex items-center justify-between text-left focus:outline-none">
+                    <span class="font-medium text-lg text-stone-800">How is this different from existing wellness apps?</span>
+                    <svg class="w-6 h-6 text-stone-400 transform transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
+                </button>
+                <div class="faq-content px-6 text-stone-500 leading-relaxed">
+                    <div class="pb-6">
+                        We prioritize aesthetics and minimal interaction. Instead of gamification and endless metrics, we focus on providing a tactile, visually soothing space that encourages you to put your phone down.
+                    </div>
+                </div>
+            </div>
+
+            <!-- FAQ Item 2 -->
+            <div class="faq-container bg-white rounded-2xl border border-stone-100 shadow-sm overflow-hidden">
+                <button class="faq-btn w-full px-6 py-6 flex items-center justify-between text-left focus:outline-none">
+                    <span class="font-medium text-lg text-stone-800">Is it available on both iOS and Android?</span>
+                    <svg class="w-6 h-6 text-stone-400 transform transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
+                </button>
+                <div class="faq-content px-6 text-stone-500 leading-relaxed">
+                    <div class="pb-6">
+                        We are launching initially on iOS to perfect the tactile feedback and animations, with an Android version planned for later this year. Join the waitlist to be notified!
+                    </div>
+                </div>
+            </div>
+
+            <!-- FAQ Item 3 -->
+            <div class="faq-container bg-white rounded-2xl border border-stone-100 shadow-sm overflow-hidden">
+                <button class="faq-btn w-full px-6 py-6 flex items-center justify-between text-left focus:outline-none">
+                    <span class="font-medium text-lg text-stone-800">What does the 'Breathe' button actually do?</span>
+                    <svg class="w-6 h-6 text-stone-400 transform transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
+                </button>
+                <div class="faq-content px-6 text-stone-500 leading-relaxed">
+                    <div class="pb-6">
+                        It initiates a guided haptic breathing exercise. The phone gently vibrates in rhythm with a visual cue, allowing you to close your eyes and anchor your focus purely on physical sensation.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Waitlist Conversion -->
+    <section id="waitlist" class="relative py-32 px-4 overflow-hidden flex justify-center items-center reveal-element">
+        <!-- Floating blurred background -->
+        <div class="absolute inset-0 z-0 flex items-center justify-center opacity-30">
+            <div class="w-[600px] h-[600px] bg-gradient-to-tr from-[#FFB7B2] to-[#EFEDF4] rounded-full blur-[100px] animate-float"></div>
+        </div>
+
+        <div class="relative z-10 w-full max-w-xl text-center">
+            <!-- Icon -->
+            <div class="w-16 h-16 mx-auto bg-soft-dark rounded-[1.25rem] flex items-center justify-center mb-8 shadow-soft-lg transform -rotate-3">
+                <div class="w-4 h-4 bg-soft-coral rounded-full"></div>
+            </div>
+
+            <h2 class="text-4xl md:text-5xl font-medium tracking-tight mb-4">Reserve your space.</h2>
+            <p class="text-lg text-soft-muted mb-10">Join a limited group of early adopters helping us shape the future of digital wellbeing.</p>
+
+            <form class="relative max-w-md mx-auto" onsubmit="event.preventDefault(); alert('Thanks for joining the waitlist!');">
+                <input type="email" placeholder="Enter your email address" required
+                    class="w-full bg-white/80 backdrop-blur-md border border-stone-200 text-stone-800 px-6 py-4 rounded-full outline-none focus:border-soft-coral focus:ring-2 focus:ring-soft-coral/20 transition-all shadow-sm placeholder:text-stone-400">
+                <button type="submit" 
+                    class="absolute right-2 top-2 bottom-2 bg-soft-dark text-white px-6 rounded-full font-medium hover:bg-black hover:scale-105 transition-all duration-300">
+                    Join
+                </button>
+            </form>
+            <p class="mt-6 text-sm text-stone-400">No spam. Unsubscribe anytime.</p>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-12 border-t border-stone-200/50 mt-12 text-center reveal-element">
+        <p class="text-stone-400 text-sm">© 2026 Softly Wellness. Designed intentionally.</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            
+            // --- Reveal on Scroll Logic ---
+            const revealElements = document.querySelectorAll('.reveal-element');
+            
+            const revealOptions = {
+                threshold: 0.15, // Trigger when 15% of element is visible
+                rootMargin: "0px 0px -50px 0px"
+            };
+
+            const revealOnScroll = new IntersectionObserver(function(entries, observer) {
+                entries.forEach(entry => {
+                    if (!entry.isIntersecting) {
+                        return;
+                    } else {
+                        entry.target.classList.add('active');
+                        // Optional: Stop observing once revealed
+                        // observer.unobserve(entry.target);
+                    }
+                });
+            }, revealOptions);
+
+            revealElements.forEach(el => {
+                revealOnScroll.observe(el);
+            });
+
+            // --- FAQ Accordion Logic ---
+            const faqButtons = document.querySelectorAll('.faq-btn');
+
+            faqButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const content = button.nextElementSibling;
+                    const icon = button.querySelector('svg');
+
+                    // Toggle active class on content
+                    content.classList.toggle('open');
+                    
+                    // Rotate icon
+                    if (content.classList.contains('open')) {
+                        icon.classList.add('rotate-45', 'text-soft-coral');
+                        icon.classList.remove('text-stone-400');
+                    } else {
+                        icon.classList.remove('rotate-45', 'text-soft-coral');
+                        icon.classList.add('text-stone-400');
+                    }
+
+                    // Optional: Close other open FAQs (accordion style)
+                    /*
+                    document.querySelectorAll('.faq-content').forEach(otherContent => {
+                        if (otherContent !== content && otherContent.classList.contains('open')) {
+                            otherContent.classList.remove('open');
+                            const otherIcon = otherContent.previousElementSibling.querySelector('svg');
+                            otherIcon.classList.remove('rotate-45', 'text-soft-coral');
+                            otherIcon.classList.add('text-stone-400');
+                        }
+                    });
+                    */
+                });
+            });
+        });
+    </script>
+</body>
+</html>
