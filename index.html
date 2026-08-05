@@ -55,7 +55,7 @@
     margin-bottom: 20px;
   }
   .card h2 { font-size: 16px; margin-bottom: 16px; }
-  .form-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+  .form-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; gap: 8px; flex-wrap: wrap; }
   .form-head h2 { margin-bottom: 0; }
   .link-btn {
     background: none;
@@ -68,6 +68,16 @@
   }
   .link-btn:hover { background: var(--bg); }
   form { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 12px; }
+  form label { display: block; font-size: 12px; color: var(--muted); margin-bottom: 4px; }
+  input, select {
+    width: 100%;
+    padding: 9px 10px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    font-size: 14px;
+    background: #fff;
+  }
+  input:focus, select:focus { outline: 2px solid var(--primary); outline-offset: 1px; }
   .date-wrap { display: flex; gap: 6px; }
   .date-wrap input { flex: 1; }
   .date-wrap .today-btn {
@@ -81,59 +91,6 @@
     white-space: nowrap;
   }
   .date-wrap .today-btn:hover { border-color: var(--primary); color: var(--primary); }
-  .modal-backdrop {
-    display: none;
-    position: fixed;
-    inset: 0;
-    background: rgba(15, 23, 42, 0.45);
-    z-index: 50;
-    align-items: flex-start;
-    justify-content: center;
-    padding: 60px 16px;
-  }
-  .modal-backdrop.open { display: flex; }
-  .modal {
-    background: #fff;
-    border-radius: 12px;
-    width: 100%;
-    max-width: 420px;
-    padding: 24px;
-    box-shadow: 0 10px 40px rgba(0,0,0,0.2);
-  }
-  .modal h2 { font-size: 17px; margin-bottom: 16px; }
-  .modal .add-row { display: flex; gap: 8px; margin-bottom: 16px; }
-  .modal .add-row input { flex: 1; }
-  .modal ul { list-style: none; }
-  .modal ul li {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 8px 4px;
-    border-bottom: 1px solid var(--border);
-  }
-  .modal ul li .name { font-size: 14px; font-weight: 500; }
-  .modal ul li .count { font-size: 12px; color: var(--muted); margin-left: 8px; }
-  .modal ul li .row-actions { display: flex; gap: 6px; }
-  .modal ul li .row-actions button {
-    border: 1px solid var(--border);
-    background: #fff;
-    border-radius: 6px;
-    padding: 3px 10px;
-    font-size: 12px;
-    cursor: pointer;
-  }
-  .modal ul li .row-actions button:hover { border-color: var(--primary); color: var(--primary); }
-  .modal .foot { display: flex; justify-content: flex-end; gap: 8px; margin-top: 20px; }
-  form label { display: block; font-size: 12px; color: var(--muted); margin-bottom: 4px; }
-  input, select {
-    width: 100%;
-    padding: 9px 10px;
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    font-size: 14px;
-    background: #fff;
-  }
-  input:focus, select:focus { outline: 2px solid var(--primary); outline-offset: 1px; }
   .btn {
     padding: 10px 16px;
     border: none;
@@ -153,9 +110,11 @@
     border: 1px solid var(--border);
   }
   .btn-ghost:hover { background: var(--bg); color: var(--text); }
-  .toolbar { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; margin-bottom: 16px; }
+  .toolbar { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+  .toolbar .left, .toolbar .right { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
   .toolbar input[type="search"] { max-width: 280px; }
   .toolbar select { width: auto; }
+  .sync-status { font-size: 12px; color: var(--muted); }
   table { width: 100%; border-collapse: collapse; font-size: 14px; }
   th, td { text-align: left; padding: 10px 8px; border-bottom: 1px solid var(--border); }
   th { font-size: 12px; text-transform: uppercase; letter-spacing: 0.04em; color: var(--muted); }
@@ -182,6 +141,68 @@
   .foot { display: flex; justify-content: space-between; align-items: center; margin-top: 16px; }
   .muted { color: var(--muted); font-size: 13px; }
   .total-value { font-size: 16px; font-weight: 700; color: var(--text); }
+  .modal-backdrop {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(15, 23, 42, 0.45);
+    z-index: 50;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 60px 16px;
+  }
+  .modal-backdrop.open { display: flex; }
+  .modal {
+    background: #fff;
+    border-radius: 12px;
+    width: 100%;
+    max-width: 440px;
+    padding: 24px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+    max-height: 80vh;
+    overflow-y: auto;
+  }
+  .modal h2 { font-size: 17px; margin-bottom: 16px; }
+  .modal .add-row { display: flex; gap: 8px; margin-bottom: 16px; }
+  .modal .add-row input { flex: 1; }
+  .modal ul { list-style: none; }
+  .modal ul li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 4px;
+    border-bottom: 1px solid var(--border);
+  }
+  .modal ul li .name { font-size: 14px; font-weight: 500; }
+  .modal ul li .count { font-size: 12px; color: var(--muted); margin-left: 8px; }
+  .modal ul li .row-actions { display: flex; gap: 6px; }
+  .modal ul li .row-actions button {
+    border: 1px solid var(--border);
+    background: #fff;
+    border-radius: 6px;
+    padding: 3px 10px;
+    font-size: 12px;
+    cursor: pointer;
+  }
+  .modal ul li .row-actions button:hover { border-color: var(--primary); color: var(--primary); }
+  .modal .foot { display: flex; justify-content: flex-end; gap: 8px; margin-top: 20px; }
+  .modal label.field { display: block; font-size: 12px; color: var(--muted); margin: 12px 0 4px; }
+  .check { display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--muted); margin-top: 10px; }
+  .check input { width: auto; }
+  details.script { margin-top: 14px; border: 1px solid var(--border); border-radius: 8px; padding: 10px 12px; }
+  details.script summary { font-size: 13px; font-weight: 600; cursor: pointer; color: var(--primary); }
+  details.script ol { font-size: 13px; color: var(--muted); margin-top: 8px; padding-left: 20px; line-height: 1.5; }
+  details.script pre {
+    margin-top: 10px;
+    background: #0f172a;
+    color: #e2e8f0;
+    padding: 12px;
+    border-radius: 8px;
+    font-size: 12px;
+    overflow-x: auto;
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
   @media (max-width: 600px) {
     table { display: block; overflow-x: auto; white-space: nowrap; }
   }
@@ -202,7 +223,10 @@
   <div class="card">
     <div class="form-head">
       <h2 id="formTitle">Add Item</h2>
-      <button type="button" class="link-btn" id="manageCats">Manage Categories</button>
+      <div>
+        <button type="button" class="link-btn" id="manageCats">Categories</button>
+        <button type="button" class="link-btn" id="manageRooms">Rooms</button>
+      </div>
     </div>
     <form id="itemForm">
       <div>
@@ -215,7 +239,7 @@
       </div>
       <div>
         <label for="room">Room / Location</label>
-        <input type="text" id="room" placeholder="Living room">
+        <select id="room"></select>
       </div>
       <div>
         <label for="quantity">Quantity</label>
@@ -244,16 +268,26 @@
   </div>
 
   <div class="toolbar">
-    <input type="search" id="search" placeholder="Search items...">
-    <select id="filterCat">
-      <option value="">All categories</option>
-    </select>
-    <select id="sortBy">
-      <option value="name">Sort: Name</option>
-      <option value="value">Sort: Value</option>
-      <option value="room">Sort: Room</option>
-      <option value="added">Sort: Date added</option>
-    </select>
+    <div class="left">
+      <input type="search" id="search" placeholder="Search items...">
+      <select id="filterCat">
+        <option value="">All categories</option>
+      </select>
+      <select id="filterRoom">
+        <option value="">All rooms</option>
+      </select>
+      <select id="sortBy">
+        <option value="name">Sort: Name</option>
+        <option value="value">Sort: Value</option>
+        <option value="room">Sort: Room</option>
+        <option value="added">Sort: Date added</option>
+      </select>
+    </div>
+    <div class="right">
+      <span class="sync-status" id="syncStatus"></span>
+      <button type="button" class="link-btn" id="syncBtn">Sync to Sheet</button>
+      <button type="button" class="link-btn" id="settingsBtn">Settings</button>
+    </div>
   </div>
 
   <div class="card" style="padding: 8px 16px 16px;">
@@ -271,16 +305,76 @@
   </div>
 </main>
 
-<div class="modal-backdrop" id="catModal">
+<div class="modal-backdrop" id="listModal">
   <div class="modal">
-    <h2>Manage Categories</h2>
+    <h2 id="listModalTitle">Manage Categories</h2>
     <div class="add-row">
-      <input type="text" id="newCatName" maxlength="40" placeholder="New category name">
-      <button type="button" class="btn" id="addCatBtn">Add</button>
+      <input type="text" id="newItemName" maxlength="40" placeholder="New category name">
+      <button type="button" class="btn" id="addItemBtn">Add</button>
     </div>
-    <ul id="catList"></ul>
+    <ul id="listModalList"></ul>
     <div class="foot">
-      <button type="button" class="btn-ghost" id="closeCatModal">Close</button>
+      <button type="button" class="btn-ghost" id="closeListModal">Close</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-backdrop" id="settingsModal">
+  <div class="modal">
+    <h2>Google Sheets Sync</h2>
+    <p class="muted">Push all records to a Google Sheet via a free Apps Script web app. Click "Sync to Sheet" in the toolbar anytime.</p>
+    <label class="field" for="sheetUrl">Apps Script Web App URL</label>
+    <input type="text" id="sheetUrl" placeholder="https://script.google.com/macros/s/AKfycb.../exec">
+    <label class="check">
+      <input type="checkbox" id="autoSync"> Auto-sync after every change
+    </label>
+    <details class="script">
+      <summary>Setup: connect your Google Sheet</summary>
+      <ol>
+        <li>Create a Google Sheet (or use an existing one).</li>
+        <li>Menu: Extensions &gt; Apps Script.</li>
+        <li>Delete any sample code and paste the script below.</li>
+        <li>Click Deploy &gt; New deployment &gt; Web app. Set "Execute as: Me" and "Who has access: Anyone", then Deploy.</li>
+        <li>Copy the Web app URL and paste it above, then click Save.</li>
+      </ol>
+      <pre>const SHEET = 'Inventory';
+
+function doGet() {
+  const sheet = sheet_();
+  return out_(JSON.stringify(sheet.getDataRange().getValues()));
+}
+
+function doPost(e) {
+  try {
+    const payload = JSON.parse(e.postData.contents);
+    const headers = ['ID', 'Name', 'Category', 'Room', 'Date', 'Quantity', 'Value', 'Notes', 'DateAdded'];
+    const rows = (payload.items || []).map(function (it) {
+      return [it.id, it.name, it.category, it.room, it.date, it.quantity, it.value, it.notes, it.added];
+    });
+    const s = sheet_();
+    s.clearContents();
+    s.getRange(1, 1, 1, headers.length).setValues([headers]);
+    if (rows.length) {
+      s.getRange(2, 1, rows.length, headers.length).setValues(rows);
+    }
+    return out_('OK:' + rows.length + ' rows written');
+  } catch (err) {
+    return out_('ERROR:' + err.message);
+  }
+}
+
+function sheet_() {
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  return ss.getSheetByName(SHEET) || ss.insertSheet(SHEET);
+}
+
+function out_(text) {
+  return ContentService.createTextOutput(text).setMimeType(ContentService.MimeType.TEXT);
+}</pre>
+    </details>
+    <div class="foot">
+      <button type="button" class="btn-ghost" id="closeSettings">Cancel</button>
+      <button type="button" class="btn" id="saveSettings">Save</button>
     </div>
   </div>
 </div>
@@ -289,11 +383,17 @@
 (function () {
   const STORAGE_KEY = 'home_inventory_items';
   const CAT_KEY = 'home_inventory_categories';
+  const ROOMS_KEY = 'home_inventory_rooms';
+  const SETTINGS_KEY = 'home_inventory_settings';
   const DEFAULT_CATS = ['Furniture','Electronics','Kitchen','Clothing','Appliances','Jewelry','Tools','Books','Sports','Other'];
+  const DEFAULT_ROOMS = ['Living Room','Kitchen','Bedroom','Bathroom','Dining Room','Office','Garage','Basement','Other'];
 
   let items = load(STORAGE_KEY, []);
   let categories = load(CAT_KEY, DEFAULT_CATS);
+  let rooms = load(ROOMS_KEY, DEFAULT_ROOMS);
+  let settings = load(SETTINGS_KEY, { sheetUrl: '', autoSync: false });
   let editingId = null;
+  let managerType = 'category';
 
   function load(key, fallback) {
     try {
@@ -313,8 +413,10 @@
   const form = document.getElementById('itemForm');
   const searchInput = document.getElementById('search');
   const filterCat = document.getElementById('filterCat');
+  const filterRoom = document.getElementById('filterRoom');
   const sortBy = document.getElementById('sortBy');
   const catSelect = document.getElementById('category');
+  const roomSelect = document.getElementById('room');
 
   function populateCategorySelects(keep) {
     catSelect.innerHTML = '';
@@ -324,6 +426,16 @@
       filterCat.insertAdjacentHTML('beforeend', '<option>' + escapeHtml(c) + '</option>');
     });
     if (keep) catSelect.value = keep;
+  }
+
+  function populateRoomSelects(keep) {
+    roomSelect.innerHTML = '';
+    filterRoom.innerHTML = '<option value="">All rooms</option>';
+    rooms.forEach(function (r) {
+      roomSelect.insertAdjacentHTML('beforeend', '<option>' + escapeHtml(r) + '</option>');
+      filterRoom.insertAdjacentHTML('beforeend', '<option>' + escapeHtml(r) + '</option>');
+    });
+    if (keep) roomSelect.value = keep;
   }
 
   function money(n) {
@@ -359,11 +471,13 @@
   function visibleItems() {
     const q = searchInput.value.trim().toLowerCase();
     const cat = filterCat.value;
+    const room = filterRoom.value;
     const sort = sortBy.value;
     let list = items.filter(function (it) {
       const matchQ = !q || it.name.toLowerCase().indexOf(q) !== -1 || (it.room || '').toLowerCase().indexOf(q) !== -1 || (it.notes || '').toLowerCase().indexOf(q) !== -1;
       const matchC = !cat || it.category === cat;
-      return matchQ && matchC;
+      const matchR = !room || it.room === room;
+      return matchQ && matchC && matchR;
     });
     list.sort(function (a, b) {
       if (sort === 'value') return (b.value || 0) - (a.value || 0);
@@ -395,9 +509,9 @@
     empty.style.display = list.length ? 'none' : 'block';
 
     const totalValue = items.reduce(function (s, it) { return s + Number(it.value || 0); }, 0);
-    const rooms = new Set(items.map(function (it) { return it.room; }).filter(Boolean));
+    const roomSet = new Set(items.map(function (it) { return it.room; }).filter(Boolean));
     document.getElementById('statItems').textContent = items.length;
-    document.getElementById('statRooms').textContent = rooms.size;
+    document.getElementById('statRooms').textContent = roomSet.size;
     document.getElementById('statValue').textContent = money(totalValue);
     document.getElementById('count').textContent = list.length + ' of ' + items.length + ' items';
     document.getElementById('totalValue').textContent = 'Total: ' + money(totalValue);
@@ -418,7 +532,7 @@
     const data = {
       name: document.getElementById('name').value.trim(),
       category: document.getElementById('category').value,
-      room: document.getElementById('room').value.trim(),
+      room: document.getElementById('room').value,
       quantity: parseInt(document.getElementById('quantity').value, 10) || 1,
       value: parseFloat(document.getElementById('value').value) || 0,
       date: normalizeDate(document.getElementById('date').value),
@@ -444,6 +558,7 @@
     form.reset();
     document.getElementById('quantity').value = 1;
     render();
+    maybeAutoSync();
   });
 
   tbody.addEventListener('click', function (e) {
@@ -459,6 +574,7 @@
         if (editingId === id) resetForm();
         save(STORAGE_KEY, items);
         render();
+        maybeAutoSync();
       }
     } else if (btn.classList.contains('edit')) {
       editingId = id;
@@ -488,115 +604,209 @@
   document.getElementById('cancelEdit').addEventListener('click', resetForm);
   searchInput.addEventListener('input', render);
   filterCat.addEventListener('change', render);
+  filterRoom.addEventListener('change', render);
   sortBy.addEventListener('change', render);
 
   document.getElementById('todayBtn').addEventListener('click', function () {
     document.getElementById('date').value = formatDate(new Date());
   });
 
-  function categoryCount(name) {
-    return items.filter(function (it) { return it.category === name; }).length;
+  function getManagerList() { return managerType === 'category' ? categories : rooms; }
+  function getManagerKey() { return managerType === 'category' ? CAT_KEY : ROOMS_KEY; }
+  function getManagerField() { return managerType === 'category' ? 'category' : 'room'; }
+  function getManagerSelect() { return managerType === 'category' ? catSelect : roomSelect; }
+
+  function managerCount(name) {
+    const field = getManagerField();
+    return items.filter(function (it) { return it[field] === name; }).length;
   }
 
-  function renderCatList() {
-    const list = document.getElementById('catList');
+  function renderManagerList() {
+    const list = document.getElementById('listModalList');
+    const arr = getManagerList();
     list.innerHTML = '';
-    categories.forEach(function (c) {
+    arr.forEach(function (name) {
       const li = document.createElement('li');
       li.innerHTML =
-        '<span><span class="name">' + escapeHtml(c) + '</span><span class="count">' + categoryCount(c) + ' item(s)</span></span>' +
+        '<span><span class="name">' + escapeHtml(name) + '</span><span class="count">' + managerCount(name) + ' item(s)</span></span>' +
         '<span class="row-actions">' +
-          '<button class="ren" data-name="' + escapeHtml(c) + '">Rename</button>' +
-          '<button class="cat-del" data-name="' + escapeHtml(c) + '">Delete</button>' +
+          '<button class="ren" data-name="' + escapeHtml(name) + '">Rename</button>' +
+          '<button class="man-del" data-name="' + escapeHtml(name) + '">Delete</button>' +
         '</span>';
       list.appendChild(li);
     });
   }
 
-  function openCatModal() {
-    renderCatList();
-    document.getElementById('catModal').classList.add('open');
+  function openManager(type) {
+    managerType = type;
+    const isCat = type === 'category';
+    document.getElementById('listModalTitle').textContent = isCat ? 'Manage Categories' : 'Manage Rooms';
+    document.getElementById('newItemName').placeholder = isCat ? 'New category name' : 'New room name';
+    renderManagerList();
+    document.getElementById('listModal').classList.add('open');
   }
 
-  function closeCatModal() {
-    document.getElementById('catModal').classList.remove('open');
-    document.getElementById('newCatName').value = '';
+  function closeManager() {
+    document.getElementById('listModal').classList.remove('open');
+    document.getElementById('newItemName').value = '';
   }
 
-  document.getElementById('manageCats').addEventListener('click', openCatModal);
-  document.getElementById('closeCatModal').addEventListener('click', closeCatModal);
-  document.getElementById('catModal').addEventListener('click', function (e) {
-    if (e.target === this) closeCatModal();
+  document.getElementById('manageCats').addEventListener('click', function () { openManager('category'); });
+  document.getElementById('manageRooms').addEventListener('click', function () { openManager('room'); });
+  document.getElementById('closeListModal').addEventListener('click', closeManager);
+  document.getElementById('listModal').addEventListener('click', function (e) {
+    if (e.target === this) closeManager();
   });
 
-  function addCategory(name) {
+  function addManagerItem(name) {
     name = name.trim();
     if (!name) return;
-    if (categories.indexOf(name) !== -1) {
-      alert('Category "' + name + '" already exists.');
+    const list = getManagerList();
+    if (list.indexOf(name) !== -1) {
+      alert('"' + name + '" already exists.');
       return;
     }
-    categories.push(name);
-    save(CAT_KEY, categories);
+    list.push(name);
+    save(getManagerKey(), list);
     populateCategorySelects(catSelect.value);
-    renderCatList();
+    populateRoomSelects(roomSelect.value);
+    renderManagerList();
   }
 
-  document.getElementById('addCatBtn').addEventListener('click', function () {
-    addCategory(document.getElementById('newCatName').value);
-    document.getElementById('newCatName').value = '';
-    document.getElementById('newCatName').focus();
+  document.getElementById('addItemBtn').addEventListener('click', function () {
+    addManagerItem(document.getElementById('newItemName').value);
+    document.getElementById('newItemName').value = '';
+    document.getElementById('newItemName').focus();
   });
-  document.getElementById('newCatName').addEventListener('keydown', function (e) {
+  document.getElementById('newItemName').addEventListener('keydown', function (e) {
     if (e.key === 'Enter') {
       e.preventDefault();
-      addCategory(this.value);
+      addManagerItem(this.value);
       this.value = '';
     }
   });
 
-  document.getElementById('catList').addEventListener('click', function (e) {
+  document.getElementById('listModalList').addEventListener('click', function (e) {
     const btn = e.target.closest('button');
     if (!btn) return;
     const name = btn.getAttribute('data-name');
+    const list = getManagerList();
+    const field = getManagerField();
 
-    if (btn.classList.contains('cat-del')) {
-      if (confirm('Delete category "' + name + '"? Items in it will be moved to "Other".')) {
-        categories = categories.filter(function (c) { return c !== name; });
-        items = items.map(function (it) {
-          if (it.category === name) it.category = 'Other';
-          return it;
-        });
-        save(CAT_KEY, categories);
-        save(STORAGE_KEY, items);
-        if (catSelect.value === name) catSelect.value = 'Other';
-        populateCategorySelects(catSelect.value);
-        renderCatList();
-        render();
-      }
+    if (btn.classList.contains('man-del')) {
+      const isCat = managerType === 'category';
+      const target = isCat ? (list.indexOf('Other') !== -1 ? 'Other' : (list[0] || '')) : '';
+      const msg = isCat
+        ? 'Delete category "' + name + '"? Items in it will be moved to "' + (target || 'none') + '".'
+        : 'Delete room "' + name + '"? Items in it will have no room.';
+      if (!confirm(msg)) return;
+      const newList = list.filter(function (c) { return c !== name; });
+      items = items.map(function (it) {
+        if (it[field] === name) it[field] = target;
+        return it;
+      });
+      if (isCat) categories = newList; else rooms = newList;
+      save(getManagerKey(), newList);
+      save(STORAGE_KEY, items);
+      const sel = getManagerSelect();
+      if (sel.value === name) sel.value = target;
+      populateCategorySelects(catSelect.value);
+      populateRoomSelects(roomSelect.value);
+      renderManagerList();
+      render();
+      maybeAutoSync();
     } else if (btn.classList.contains('ren')) {
       const newName = prompt('Rename "' + name + '" to:', name);
       if (!newName || newName.trim() === name) return;
       const clean = newName.trim();
       if (!clean) return;
-      if (categories.indexOf(clean) !== -1) {
-        alert('Category "' + clean + '" already exists.');
+      if (list.indexOf(clean) !== -1) {
+        alert('"' + clean + '" already exists.');
         return;
       }
-      categories = categories.map(function (c) { return c === name ? clean : c; });
       items = items.map(function (it) {
-        if (it.category === name) it.category = clean;
+        if (it[field] === name) it[field] = clean;
         return it;
       });
-      save(CAT_KEY, categories);
+      if (managerType === 'category') {
+        categories = categories.map(function (c) { return c === name ? clean : c; });
+        save(CAT_KEY, categories);
+      } else {
+        rooms = rooms.map(function (r) { return r === name ? clean : r; });
+        save(ROOMS_KEY, rooms);
+      }
       save(STORAGE_KEY, items);
       populateCategorySelects(catSelect.value);
-      renderCatList();
+      populateRoomSelects(roomSelect.value);
+      renderManagerList();
       render();
+      maybeAutoSync();
     }
   });
 
+  function openSettings() {
+    document.getElementById('sheetUrl').value = settings.sheetUrl || '';
+    document.getElementById('autoSync').checked = !!settings.autoSync;
+    document.getElementById('settingsModal').classList.add('open');
+  }
+
+  function closeSettings() {
+    document.getElementById('settingsModal').classList.remove('open');
+  }
+
+  document.getElementById('settingsBtn').addEventListener('click', openSettings);
+  document.getElementById('closeSettings').addEventListener('click', closeSettings);
+  document.getElementById('settingsModal').addEventListener('click', function (e) {
+    if (e.target === this) closeSettings();
+  });
+  document.getElementById('saveSettings').addEventListener('click', function () {
+    settings.sheetUrl = document.getElementById('sheetUrl').value.trim();
+    settings.autoSync = document.getElementById('autoSync').checked;
+    save(SETTINGS_KEY, settings);
+    closeSettings();
+    const status = document.getElementById('syncStatus');
+    if (settings.sheetUrl) {
+      status.textContent = 'Sheet connected';
+      status.style.color = 'var(--primary)';
+    } else {
+      status.textContent = '';
+    }
+  });
+
+  function syncToSheet() {
+    const url = settings.sheetUrl && settings.sheetUrl.trim();
+    const status = document.getElementById('syncStatus');
+    if (!url) {
+      status.textContent = 'No sheet URL set (Settings)';
+      status.style.color = 'var(--danger)';
+      return;
+    }
+    status.textContent = 'Syncing...';
+    status.style.color = 'var(--muted)';
+    fetch(url, {
+      method: 'POST',
+      body: JSON.stringify({ items: items })
+    })
+      .then(function (r) { return r.text(); })
+      .then(function (t) {
+        const ok = t.indexOf('OK') === 0;
+        status.textContent = ok ? ('Saved to Sheet: ' + t.slice(3)) : ('Sheet error: ' + t);
+        status.style.color = ok ? 'var(--primary)' : 'var(--danger)';
+      })
+      .catch(function () {
+        status.textContent = 'Sync failed';
+        status.style.color = 'var(--danger)';
+      });
+  }
+
+  function maybeAutoSync() {
+    if (settings.autoSync) syncToSheet();
+  }
+
+  document.getElementById('syncBtn').addEventListener('click', syncToSheet);
+
   populateCategorySelects();
+  populateRoomSelects();
   render();
 })();
 </script>
