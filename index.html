@@ -354,7 +354,7 @@
 <div class="modal-backdrop" id="settingsModal">
   <div class="modal">
     <h2>Google Sheets Sync</h2>
-    <p class="muted">Push all records to a Google Sheet via a free Apps Script web app. Click "Sync to Sheet" in the toolbar anytime.</p>
+    <p class="muted">On startup the app loads all records from your sheet. Use "Sync to Sheet" in the toolbar to push your current records back.</p>
     <label class="field" for="sheetUrl">Apps Script Web App URL</label>
     <input type="text" id="sheetUrl" placeholder="https://script.google.com/macros/s/AKfycb.../exec">
     <label class="check">
@@ -837,9 +837,72 @@ function out_(text) {
 
   document.getElementById('syncBtn').addEventListener('click', syncToSheet);
 
+  function rowsToItems(rows) {
+    const headers = rows[0].map(function (h) { return String(h).trim(); });
+    const idx = function (name) { return headers.indexOf(name); };
+    const iId = idx('ID'), iName = idx('Name'), iCat = idx('Category'), iRoom = idx('Room'),
+          iDate = idx('Date'), iQty = idx('Quantity'), iVal = idx('Value'), iNotes = idx('Notes'), iAdded = idx('DateAdded');
+    const out = [];
+    for (let r = 1; r < rows.length; r++) {
+      const row = rows[r];
+      const name = iName !== -1 ? String(row[iName] || '').trim() : '';
+      if (!name) continue;
+      out.push({
+        id: iId !== -1 && row[iId] ? String(row[iId]) : uid(),
+        name: name,
+        category: iCat !== -1 && row[iCat] ? String(row[iCat]) : 'Other',
+        room: iRoom !== -1 && row[iRoom] ? String(row[iRoom]) : '',
+        date: iDate !== -1 && row[iDate] ? String(row[iDate]) : '',
+        quantity: iQty !== -1 && row[iQty] != null ? (Number(row[iQty]) || 1) : 1,
+        value: iVal !== -1 && row[iVal] != null ? (Number(row[iVal]) || 0) : 0,
+        notes: iNotes !== -1 && row[iNotes] ? String(row[iNotes]) : '',
+        added: iAdded !== -1 && row[iAdded] ? Number(row[iAdded]) : Date.now()
+      });
+    }
+    return out;
+  }
+
+  function loadFromSheet() {
+    const url = settings.sheetUrl && settings.sheetUrl.trim();
+    const status = document.getElementById('syncStatus');
+    if (!url) {
+      items = load(STORAGE_KEY, []);
+      return Promise.resolve();
+    }
+    status.textContent = 'Loading from sheet...';
+    status.style.color = 'var(--muted)';
+    return fetch(url)
+      .then(function (r) { return r.text(); })
+      .then(function (t) {
+        let data;
+        try {
+          data = JSON.parse(t);
+        } catch (e) {
+          throw new Error('Invalid response');
+        }
+        if (!Array.isArray(data) || data.length === 0) {
+          items = load(STORAGE_KEY, []);
+          status.textContent = 'Sheet is empty, using local records';
+          status.style.color = 'var(--muted)';
+          return;
+        }
+        items = rowsToItems(data);
+        save(STORAGE_KEY, items);
+        status.textContent = 'Loaded ' + items.length + ' records from sheet';
+        status.style.color = 'var(--primary)';
+      })
+      .catch(function () {
+        items = load(STORAGE_KEY, []);
+        status.textContent = 'Could not load sheet, using local records';
+        status.style.color = 'var(--danger)';
+      });
+  }
+
   populateCategorySelects();
   populateRoomSelects();
-  render();
+  loadFromSheet().then(function () {
+    render();
+  });
 })();
 </script>
 </body>
