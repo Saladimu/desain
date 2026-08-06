@@ -2,7 +2,7 @@
 
 A simple, self-contained web app to track household belongings for insurance and peace of mind. Runs on phone, tablet, and desktop — no build step, no dependencies, no backend required.
 
-**Live demo:** [Home Inventory](https://4173-ca75939765836199.monkeycode-ai.live)
+**Live demo:** [Home Inventory](https://saladimu.github.io/desain/)
 
 ---
 
